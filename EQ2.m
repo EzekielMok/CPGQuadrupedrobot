@@ -1,0 +1,44 @@
+function udot=EQ2(t,u,flag,WYf,WYe,ye,yf,w)
+Tr=0.04;%上升时间参数
+Ta=0.38;
+c=0.23;%直流输入
+b=-2.0;%适应系数
+a=-1.0;%抑制系数
+leg_num=4;%足的个数
+uf=[u(1);u(5);u(9);u(13)];
+ue=[u(3);u(7);u(11);u(15)];
+yf(1)=max(uf(1),0);
+ye(1)=max(ue(1),0);
+yf(2)=max(uf(2),0);
+ye(2)=max(ue(2),0);
+yf(3)=max(uf(3),0);
+ye(3)=max(ue(3),0);
+yf(4)=max(uf(4),0);
+ye(4)=max(ue(4),0);
+for j=1:1:leg_num
+    WYf(1)=WYf(1)+w(1,j)*yf(j);
+    WYe(1)=WYe(1)+w(1,j)*ye(j);
+    WYf(2)=WYf(2)+w(2,j)*yf(j);
+    WYe(2)=WYe(2)+w(2,j)*ye(j);
+    WYf(3)=WYf(3)+w(3,j)*yf(j);
+    WYe(3)=WYe(3)+w(3,j)*ye(j);
+    WYf(4)=WYf(4)+w(4,j)*yf(j);
+    WYe(4)=WYe(4)+w(4,j)*ye(j);
+end 
+udot=[(-u(1)+b*u(2)+a*ye(1)+WYf(1)+c)/Tr;
+     (yf(1)-u(2))/Ta;
+     (-u(3)+b*u(4)+a*yf(1)+WYe(1)+c)/Tr
+     (ye(1)-u(4))/Ta;
+     (-u(5)+b*u(6)+a*ye(2)+WYf(2)+c)/Tr;
+     (yf(2)-u(6))/Ta;
+     (-u(7)+b*u(8)+a*yf(2)+WYe(2)+c)/Tr
+     (ye(2)-u(8))/Ta;
+     (-u(9)+b*u(10)+a*ye(3)+WYf(3)+c)/Tr;
+     (yf(3)-u(10))/Ta;
+     (-u(11)+b*u(12)+a*yf(3)+WYe(3)+c)/Tr
+     (ye(3)-u(12))/Ta;
+     (-u(13)+b*u(14)+a*ye(4)+WYf(4)+c)/Tr;
+     (yf(4)-u(14))/Ta;
+     (-u(15)+b*u(16)+a*yf(4)+WYe(4)+c)/Tr
+     (ye(4)-u(16))/Ta;];
+end
